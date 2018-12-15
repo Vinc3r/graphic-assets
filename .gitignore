@@ -1,3 +1,4 @@
+*.log
 *.blend1
 *.blend2
 *.DS_Store
@@ -6,3 +7,4 @@ Thumbs.db
 *.ffs_db
 .directory
 *__pycache__*
+*.manifest
