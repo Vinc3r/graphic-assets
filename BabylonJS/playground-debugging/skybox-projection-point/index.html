@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Babylon.js sample code</title>
+
+        <!-- Babylon.js -->
+        <script src="https://code.jquery.com/pep/0.4.2/pep.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="https://preview.babylonjs.com/ammo.js"></script>
+        <script src="https://preview.babylonjs.com/cannon.js"></script>
+        <script src="https://preview.babylonjs.com/Oimo.js"></script>
+        <script src="https://preview.babylonjs.com/gltf_validator.js"></script>
+        <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+        <script src="https://preview.babylonjs.com/babylon.js"></script>
+        <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+        <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+
+        <style>
+            html, body {
+                overflow: hidden;
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+
+            #renderCanvas {
+                width: 100%;
+                height: 100%;
+                touch-action: none;
+            }
+        </style>
+    </head>
+<body>
+<!-- original playground https://www.babylonjs-playground.com/#JCZIXE#15 -->
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var createScene = function () {
+            engine.disableManifestCheck = true;
+            var scene = new BABYLON.Scene(engine);
+            scene.createDefaultEnvironment({
+                createSkybox:false,
+                createGround: false
+            });
+            scene.ambientColor = BABYLON.Color3.Gray();
+            var camera = new BABYLON.ArcRotateCamera("camera", 1, 1, 10, new BABYLON.Vector3(0,1,0), scene);
+            camera.wheelPrecision = 100;
+            camera.minZ = 0.001;
+            camera.attachControl(canvas, true);
+        
+            var wallzMesh;
+            var wallzMat;
+            var cubeTexture01 = new BABYLON.CubeTexture("cubemap/", scene);
+            var camSwitched = false;
+            var point1ToPoint2;
+            var reflectionMatrix;
+            var refPoint02;
+        
+            BABYLON.SceneLoader.ImportMesh(
+                "",
+                "",
+                "skybox-projection-point.babylon",
+                scene,
+                function(){
+                    wallzMesh = scene.getMeshByName("wallz.000");
+        
+                    wallzMat = new BABYLON.PBRMaterial("wallzMat", scene);
+                    wallzMat.metallic = 1;
+                    wallzMat.albedoColor = BABYLON.Color3.White();
+                    wallzMat.ambientColor = BABYLON.Color3.Black();
+                    wallzMat.disableLighting = true;
+                    wallzMat.roughness = 0;
+                    wallzMat.reflectionTexture = cubeTexture01;
+                    wallzMat.reflectionTexture.coordinatesMode = BABYLON.Texture.SKYBOX_MODE;                    
+                    wallzMesh.material = wallzMat;
+                    refPoint02 = scene.getMeshByName("refPoint.001");
+                }
+            );
+        
+            var time = 0;
+            var reflectionMatrixRef;
+            var dynSkyMoving;
+            scene.registerBeforeRender(function(){
+                time += 0.005;
+                if(refPoint02){
+                    refPoint02.position.z = refPoint02.position.z + Math.cos(time) * 0.01;
+                    dynSkyMoving = wallzMesh.position.subtract(refPoint02.position);
+                    reflectionMatrixRef = BABYLON.Matrix.Translation(0, dynSkyMoving.z, 0);
+                    wallzMat.reflectionTexture.setReflectionTextureMatrix(reflectionMatrixRef);
+                }
+            });
+        
+            return scene;
+        };
+        
+        
+        
+        var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+        var scene = createScene();
+
+        engine.runRenderLoop(function () {
+            if (scene) {
+                scene.render();
+            }
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+</html>
