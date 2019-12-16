@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Babylon.js sample code</title>
+
+    <!-- Babylon.js -->
+    <script src="babylon.js"></script>
+    <script src="babylon.glTFFileLoader.min.js"></script>
+
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var startDate = new Date();
+        var canvas = document.getElementById("renderCanvas");
+
+        var engine = null;
+        var scene = null;
+        var createDefaultEngine = function () {
+            return new BABYLON.Engine(canvas, true, {
+                preserveDrawingBuffer: true,
+                stencil: true
+            });
+        };
+        var delayCreateScene = function () {
+            var scene = new BABYLON.Scene(engine);
+            scene.createDefaultCamera();
+
+            // The first parameter can be used to specify which mesh to import. Here we import all meshes
+            BABYLON.SceneLoader.Append("../", "dragon.glb", scene, function (newMeshes) {
+                scene.createDefaultCameraOrLight(true, true);
+                scene.activeCamera.attachControl(canvas, false);
+                scene.activeCamera.alpha += Math.PI; // camera +180°
+                var timing = Math.abs(startDate - new Date());
+                console.log("BJS loaded - " + timing);
+            });
+
+            return scene;
+        }
+
+        engine = createDefaultEngine();
+        engine.loadingUIBackgroundColor = "transparent";
+        if (!engine) throw 'engine should not be null.';
+        scene = delayCreateScene();
+
+        engine.runRenderLoop(function () {
+            if (scene) {
+                scene.render();
+            }
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script>
+</body>
+
+</html>
