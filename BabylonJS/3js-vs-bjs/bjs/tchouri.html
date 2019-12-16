@@ -33,15 +33,8 @@
     <script>
         var t0 = performance.now();
         var canvas = document.getElementById("renderCanvas");
-
-        var engine = null;
-        var scene = null;
-        var createDefaultEngine = function () {
-            return new BABYLON.Engine(canvas, true, {
-                preserveDrawingBuffer: true,
-                stencil: true
-            });
-        };
+        var engine = new BABYLON.Engine(canvas, true);
+        engine.loadingUIBackgroundColor = "transparent";
         var delayCreateScene = function () {
             var scene = new BABYLON.Scene(engine);
             scene.createDefaultCamera();
@@ -58,9 +51,6 @@
             return scene;
         }
 
-        engine = createDefaultEngine();
-        engine.loadingUIBackgroundColor = "transparent";
-        if (!engine) throw 'engine should not be null.';
         scene = delayCreateScene();
 
         engine.runRenderLoop(function () {
