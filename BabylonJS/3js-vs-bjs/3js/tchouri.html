@@ -30,20 +30,19 @@
 		var scene = new THREE.Scene();
 
 		var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.01, 100);
-		camera.position.y = 0.05;
-		camera.position.z = 0.2;
+		camera.position.z = 36;
 		scene.add(camera);
 
 		var light = new THREE.HemisphereLight(0xffffbb, 0x080820, 1);
 		scene.add(light);
 
 		var loader = new THREE.GLTFLoader();
-		loader.load('../dragon.glb', function (gltf) {
+		loader.load('../tchouri.glb', function (gltf) {
 
 			scene.add(gltf.scene);
 			camera.position = new THREE.Vector3(5, 0, -0.5);
 
-			console.log("3JS dragon loaded - " + (performance.now() - t0) + "ms");
+			console.log("3JS tchouri loaded - " + (performance.now() - t0) + "ms");
 
 		});
 

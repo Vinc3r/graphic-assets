@@ -47,12 +47,12 @@
             scene.createDefaultCamera();
 
             // The first parameter can be used to specify which mesh to import. Here we import all meshes
-            BABYLON.SceneLoader.Append("../", "dragon.glb", scene, function (newMeshes) {
+            BABYLON.SceneLoader.Append("../", "tchouri.glb", scene, function (newMeshes) {
                 scene.createDefaultCameraOrLight(true, true);
                 scene.activeCamera.attachControl(canvas, false);
                 scene.activeCamera.alpha += Math.PI; // camera +180°
 
-                console.log("BJS dragon loaded - " + (performance.now() - t0) + "ms");
+                console.log("BJS tchouri loaded - " + (performance.now() - t0) + "ms");
             });
 
             return scene;
