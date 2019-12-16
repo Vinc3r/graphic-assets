@@ -1,5 +1,6 @@
 This is just a quick test trying to see how both engines deals with file loading.
 
-Loading time for dragon.glb (20MB) seems the same.
+- dragon.glb - 20 Mo
+- tchouri.glb - 128 Mo
 
-> as this is my first 3JS scene, I wasn't able (yet) to configure the camera so as to see the mesh
+(online demo, note that's a temporary link:  https://www.nothing-is-3d.com/tmp/3js-vs-bjs/ )
