@@ -31,7 +31,7 @@
 <body>
     <canvas id="renderCanvas"></canvas>
     <script>
-        var startDate = new Date();
+        var t0 = performance.now();
         var canvas = document.getElementById("renderCanvas");
 
         var engine = null;
@@ -51,8 +51,8 @@
                 scene.createDefaultCameraOrLight(true, true);
                 scene.activeCamera.attachControl(canvas, false);
                 scene.activeCamera.alpha += Math.PI; // camera +180°
-                var timing = Math.abs(startDate - new Date());
-                console.log("BJS loaded - " + timing);
+
+                console.log("BJS loaded - " + (performance.now() - t0) + "ms");
             });
 
             return scene;
