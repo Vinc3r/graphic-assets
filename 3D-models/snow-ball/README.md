@@ -8,7 +8,7 @@
 
 ## BJS
 
-playground available here : https://www.babylonjs-playground.com/frame.html#FH3F98#16
+playground available here : https://www.babylonjs-playground.com/frame.html#FH3F98#24
 
 forum thread : https://forum.babylonjs.com/t/happy-christmas-everyone/367/11
 
